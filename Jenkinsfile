@@ -4,31 +4,31 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/your_github_username/8.2CDevSecOps.git'
+                git branch: 'main', url: 'https://github.com/caseyjmm/8.2CDevSecOps.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'npm test || true'
+                bat 'npm test || exit /b 0' // Don’t fail the build if tests fail
             }
         }
 
         stage('Generate Coverage Report') {
             steps {
-                sh 'npm run coverage || true'
+                bat 'npm run coverage || exit /b 0'
             }
         }
 
         stage('NPM Audit (Security Scan)') {
             steps {
-                sh 'npm audit || true'
+                bat 'npm audit || exit /b 0'
             }
         }
     }

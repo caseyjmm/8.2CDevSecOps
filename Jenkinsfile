@@ -31,5 +31,21 @@ pipeline {
                 bat 'npm audit || exit /b 0'
             }
         }
+        stage('SonarCloud Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+                    bat '''
+                    echo Downloading SonarScanner CLI...
+                    curl -o sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-windows.zip
+        
+                    powershell -Command "Expand-Archive -Path sonar-scanner.zip -DestinationPath sonar"
+        
+                    echo Running SonarCloud Analysis...
+                    .\\sonar\\sonar-scanner-5.0.1.3006-windows\\bin\\sonar-scanner.bat -Dsonar.login=%SONAR_TOKEN%
+                    '''
+        }
+    }
+}
+
     }
 }

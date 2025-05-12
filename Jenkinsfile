@@ -3,31 +3,29 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/your_github_username/8.2CDevSecOps.git'
+                bat 'git clone -b main https://github.com/your_github_username/8.2CDevSecOps.git'
             }
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
         stage('Run Tests') {
             steps {
-                sh 'npm test || true' // Allows pipeline to continue despite test failures
+                bat 'npm test || exit /b 0' // Windows-friendly way to continue after test failures
             }
         }
         stage('Generate Coverage Report') {
             steps {
-                // Ensure coverage report exists
-                sh 'npm run coverage || true'
+                bat 'npm run coverage || exit /b 0'
             }
         }
-        stage('NPM Audit (Security Scan)') {
+        stage('NPM Audit (Security Scan') {
             steps {
-                sh 'npm audit || true' // This will show known CVEs in the output
+                bat 'npm audit || exit /b 0'
             }
         }
-        
         stage('SonarCloud Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {

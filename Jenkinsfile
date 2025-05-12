@@ -1,9 +1,9 @@
-pipeline {
+mpipeline {
     agent any
     stages {
         stage('Checkout') {
             steps {
-                bat 'git clone -b main https://github.com/your_github_username/8.2CDevSecOps.git'
+                bat 'git clone -b main https://github.com/caseyjmm/8.2CDevSecOps.git'
             }
         }
         stage('Install Dependencies') {
